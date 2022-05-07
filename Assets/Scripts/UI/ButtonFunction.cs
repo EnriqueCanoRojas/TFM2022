@@ -6,11 +6,11 @@ using UnityEngine.SceneManagement;
 public class ButtonFunction : MonoBehaviour
 {
     public ButtonScriptable Buttontype;
-    private GameManager gameManagerScript;
+   //private GameManager gameManagerScript;
     // Start is called before the first frame update
     void Start()
     {
-        gameManagerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
+        //gameManagerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
     }
 
     // Update is called once per frame

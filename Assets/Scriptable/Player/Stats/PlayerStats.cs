@@ -11,7 +11,10 @@ public class PlayerStats : ScriptableObject, ISerializationCallbackReceiver
     public float STM;
     public float STMCDValue;
     public float STMWaste;
+    public float MaxSpeed;
     public float Speed;
+    public float Acceleration;
+    public float Decceleration;
     public float JumpForce;
     public float TurnSpeed;
     public float AtSpeed;
@@ -33,6 +36,12 @@ public class PlayerStats : ScriptableObject, ISerializationCallbackReceiver
     public float rSTMWaste;
     [System.NonSerialized]
     public float rSTMCD;
+    [System.NonSerialized]
+    public float rAcceleration;
+    [System.NonSerialized]
+    public float rDecceleration;
+    [System.NonSerialized]
+    public float rMaxSpeed;
     [System.NonSerialized]
     public float rSpeed;
     [System.NonSerialized]
@@ -60,6 +69,9 @@ public class PlayerStats : ScriptableObject, ISerializationCallbackReceiver
         rSTMCDValue = STMCDValue;
         rSTMWaste = STMWaste;
         rSpeed = Speed;
+        rMaxSpeed = MaxSpeed;
+        rAcceleration = Acceleration;
+        rDecceleration = Decceleration;
         rJumpForce = JumpForce;
         rTurnSpeed = TurnSpeed;
         rAtSpeed = AtSpeed;

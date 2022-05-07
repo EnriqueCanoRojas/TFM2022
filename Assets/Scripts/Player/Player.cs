@@ -23,29 +23,30 @@ public class Player : MonoBehaviour
 
     private Vector3 moveDirection = Vector3.zero;
 
-    //Events
-    public EventTrigger BeingHit;
-
     [SerializeField] private Rigidbody _rigidBody;
     [SerializeField] private Transform _model;
 
-    public Animator _playerAnim;
+    [HideInInspector]
     public Quaternion currentRotation;
+
+
+    //Direct Animations 
+    public Animator _playerAnim;
+
     //inputs
     public float attack;
     public float dash;
     public Vector3 dashStrike;
 
     public Vector3 _input;
-    //public Vector3 jinput;
     public string deviceClass { get; set; }
 
     // Start is called before the first frame update
     void Start()
     {
+        _playerAnim = this.gameObject.GetComponent<Animator>();
         _rigidBody = this.GetComponent<Rigidbody>();
         _model = this.gameObject.transform;
-        _playerAnim = this.gameObject.GetComponent<Animator>();
     }
     void Update()
     {
@@ -54,45 +55,14 @@ public class Player : MonoBehaviour
         // GatherSecondaryInput();
         Look();
         Attack();
-        if (playerStats.rSTM > 0 && STMCD.RuntimeToogle)
-        {
-            Dash();
-            // STM.RuntimeValue -= STMWaste.RuntimeValue;
-            // STMCD.RuntimeToogle = false;
-            // STMColdown(STMCDValue.RuntimeValue, STMCD.RuntimeToogle);
-        }
-        if (_rigidBody.velocity.magnitude != 0)
-        {
-            _playerAnim.SetFloat("Speed", 0.5f);
-        }
-        else if (_rigidBody.velocity.magnitude >= 1)
-        {
-            _playerAnim.SetFloat("Speed", 1f);
-        }
-        else
-        {
-            _playerAnim.SetFloat("Speed", 0f);
-        }
     }
     private void FixedUpdate()
     {
         Move();
-        //Attack();
-        // Jump();
-        if (playerStats.rSTM < 0)
-        {
-            playerStats.rSTM = 0;
-        }
-        if (playerStats.rSTM < playerStats.STM)
-        {
-            playerStats.rSTM += 1;
-        }
+        Dash();
     }
     public void Move()
     {
-        //_rigidBody.MovePosition(transform.position + _input.ToIso() * _input.normalized.magnitude * Speed.RuntimeValue * Time.deltaTime);
-        //Version con salto.
-
         _rigidBody.MovePosition(transform.position + new Vector3(_input.x * playerStats.rSpeed, _input.y * playerStats.rJumpForce, _input.z * playerStats.rSpeed).ToIso() * _input.normalized.magnitude * Time.deltaTime);
     }
     public void Attack()
@@ -105,7 +75,16 @@ public class Player : MonoBehaviour
     //Dash
     public void Dash()
     {
-        _rigidBody.AddForce(transform.forward + dashStrike.ToIso() * playerStats.rdashSpeed * dash * dashStrike.normalized.magnitude * Time.deltaTime, ForceMode.Acceleration);
+        if ((dash > 0 || dash < 0) && playerStats.rSTM > 0)
+        {
+            if (STMCD.RuntimeToogle == true)
+            {
+                _rigidBody.AddForce(transform.forward + dashStrike.ToIso() * playerStats.rdashSpeed * dash * dashStrike.normalized.magnitude * Time.deltaTime, ForceMode.Impulse);
+                playerStats.rSTM -= playerStats.rSTMWaste;
+                STMColdown(playerStats.rSTMCDValue, STMCD.RuntimeToogle);
+                STMCD.RuntimeToogle = false;
+            }
+        }
     }
     //looking
     public void Look()
@@ -127,63 +106,70 @@ public class Player : MonoBehaviour
         {
             Vector3 stickValue = Gamepad.current.leftStick.ReadValue();
             float ButtonValueA = Gamepad.current.buttonSouth.ReadValue();
-
-            //Animation Controls
-            if (ButtonValueA != 0 && !isGrounded.RuntimeToogle)
-                _playerAnim.SetTrigger("Jump");
-
             dash = Gamepad.current.rightShoulder.ReadValue();
             attack = Gamepad.current.leftShoulder.ReadValue();
-
-            // _inputj = new Vector3(0, ButtonValueA, 0);
             _input = new Vector3(stickValue.x, ButtonValueA, stickValue.y);
+
+            //Animation Controls
+            if (ButtonValueA != 0 && isGrounded.RuntimeToogle)
+            { 
+                _playerAnim.SetTrigger("Jump");
+            }
         }
         else
         {
+            //Movements
             _input = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxis("Jump"), Input.GetAxisRaw("Vertical"));
-
-            //Animation Controls
-            if (Input.GetAxis("Jump") != 0 && isGrounded.RuntimeToogle!)
-                _playerAnim.SetTrigger("Jump");
-
             dash = Keyboard.current.FindKeyOnCurrentKeyboardLayout("f").ReadValue();
             attack = Keyboard.current.FindKeyOnCurrentKeyboardLayout("e").ReadValue();
+
+
+            //Animation Controls
+            if (Input.GetAxis("Jump") != 0 && isGrounded.RuntimeToogle)
+                _playerAnim.SetTrigger("Jump");
         }
     }
-    //Gather non basic inputs, Glide,....
-    public void GatherSecondaryInput()
+    public void Hitted(float dmg)
     {
+        playerStats.rHP -= dmg;
+    }
+    public void PlayerMoveSet()
+    {
+        //Dash
+        if (playerStats.rSTM > 0 && STMCD.RuntimeToogle)
+        {
+
+            // STM.RuntimeValue -= STMWaste.RuntimeValue;
+            // STMCD.RuntimeToogle = false;
+            // STMColdown(STMCDValue.RuntimeValue, STMCD.RuntimeToogle);
+        }
+        if (playerStats.rSTM < 0)
+        {
+            playerStats.rSTM = 0;
+        }
+        if (playerStats.rSTM < playerStats.STM)
+        {
+            playerStats.rSTM += 1;
+        }
+        //     }
+        //public IEnumerator PosionCo()
+        //{
+        //   int temp = 0;
+        //   while (temp < numberOfPoison)
+        //   {
+        //       Health.Instance.health -= posionDmg;
+        //       playerSprite.color = poisonColor;
+        //       yield return new WaitForSeconds(poisonDuration);
+        //       playerSprite.color = normalColor;
+        //       yield return new WaitForSeconds(poisonDuration);
+        //       temp++;
+        //  }
     }
     public IEnumerator STMColdown(float CD, bool Return)
     {
         yield return new WaitForSeconds(CD);
         Return = true;
     }
-    public void Hitted(float dmg)
-    {
-        playerStats.rHP -= dmg;
-    }
-    // public void PlayerMoveSet()
-    //  {
-    //     if (Input.GetKeyDown(KeyCode.Tab) && STM.RuntimeValue > 0 && STMCD.RuntimeToogle == false)
-    //     {
-    //Dash
-    //         STMCD.RuntimeToogle = true;
-    //         STMColdown(STMCDValue.RuntimeValue, STMCD.RuntimeToogle);
-    //     }
-    //public IEnumerator PosionCo()
-    //{
-    //   int temp = 0;
-    //   while (temp < numberOfPoison)
-    //   {
-    //       Health.Instance.health -= posionDmg;
-    //       playerSprite.color = poisonColor;
-    //       yield return new WaitForSeconds(poisonDuration);
-    //       playerSprite.color = normalColor;
-    //       yield return new WaitForSeconds(poisonDuration);
-    //       temp++;
-    //  }
-
     public IEnumerator BeHittedCD(float CD, bool done, float dmg)
     {
         if (!done)

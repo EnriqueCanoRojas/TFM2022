@@ -9,19 +9,13 @@ public class Enemy : MonoBehaviour
     public LayerMask aggroLayerMask;
     private Collider[] withinAggroColliders;
     private NavMeshAgent navAgent;
-    //private DungeonGenerator dungueonGen;
     private Player player;
     public bool isGrounded;
+    public GameObject SliderHP;
     // Start is called before the first frame update
     void Start()
     {
-        //dungueonGen = GameObject.FindGameObjectWithTag("DungueonGenerator").GetComponent<DungeonGenerator>();
         navAgent = GetComponent<NavMeshAgent>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
     void FixedUpdate()
     {
@@ -43,7 +37,12 @@ public class Enemy : MonoBehaviour
             {
                 {
                     ChasePlayer(withinAggroColliders[0].GetComponent<Player>());
+                    PopUPSlide();
                 }
+            }
+            else
+            {
+                PopDownSlide();
             }
         }
 
@@ -74,19 +73,21 @@ public class Enemy : MonoBehaviour
     }
     public void Die()
     {
-        DropLoot();
-        //CombatEvents.EnemyDied(this);
-        //this.Spawner.Respawn();
+        if(thisEnemy.drops.Length>0)
+            DropLoot();
+        else { }
         Destroy(gameObject);
     }
     void DropLoot()
     {
-        //Item item = thisEnemy.GetDrop();
-        //if (item != null)
-        //  {
-        //    PickupItem instance = Instantiate(pickupItem, transform.position, Quaternion.identity);
-        //     instance.ItemDrop = item;
-        // }
+        bool instanced = false;
+        var i = Random.Range(0, thisEnemy.drops.Length-1);
+        GameObject item = thisEnemy.drops[i];
+        if (item != null && instanced==false)
+        {
+            Instantiate(item, transform.position, Quaternion.identity);
+            instanced = true;
+        }
     }
     void ChasePlayer(Player player)
     {
@@ -101,6 +102,27 @@ public class Enemy : MonoBehaviour
         {
             CancelInvoke("PerformAttack");
         }
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Weapon"))
+        {
+            TakeDamage(collision.gameObject.GetComponent<WeaponCollision>().weapon.Power);
+            Debug.Log("Dealt Dmg it has now" + thisEnemy.currentHP);
+        }
+    }
+    void AttackPlayer(Player player)
+    {
+        this.player = player;
+        player.Hitted(thisEnemy.Power);
+    }
+    void PopUPSlide()
+    {
+        SliderHP.SetActive(true);
+    }
+    void PopDownSlide()
+    {
+        SliderHP.SetActive(false);
     }
     private bool SetDestination(Vector3 targetDestination)
     {

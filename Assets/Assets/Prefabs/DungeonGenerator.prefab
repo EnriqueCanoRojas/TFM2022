@@ -43,11 +43,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a358ed73c98264f8d0391a89263f99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 7, y: 7}
+  size: {x: 5, y: 5}
   startPos: 0
   rooms:
   - room: {fileID: 3472468476552544542, guid: 2de6e6efe5dca32449521fd574e4ec8d, type: 3}
     minPosition: {x: 0, y: 0}
     maxPosition: {x: 0, y: 0}
     obligatory: 0
+  - room: {fileID: 3472468476552544542, guid: 0176ac8e5b4ad8d48a3fa93eae659fa3, type: 3}
+    minPosition: {x: 0, y: 0}
+    maxPosition: {x: 0, y: 0}
+    obligatory: 1
   offset: {x: 22, y: 22}

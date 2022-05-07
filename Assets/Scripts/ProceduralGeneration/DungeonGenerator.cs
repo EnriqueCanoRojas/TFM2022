@@ -40,8 +40,6 @@ public class DungeonGenerator : MonoBehaviour
 
     List<Cell> board;
 
-    //public NavMeshSurface[] surfaces;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -95,11 +93,7 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
     }
-    public static void BakingNav()
-    {
-        NavMeshBuilder.ClearAllNavMeshes();
-        NavMeshBuilder.BuildNavMesh();
-    }
+
     void MazeGenerator()
     {
         board = new List<Cell>();
@@ -215,5 +209,11 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         return neighbors;
+    }
+
+    public static void BakingNav()
+    {
+        NavMeshBuilder.ClearAllNavMeshes();
+        NavMeshBuilder.BuildNavMesh();
     }
 }
