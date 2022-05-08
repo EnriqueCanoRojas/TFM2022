@@ -9,4 +9,5 @@ public class SpawnManager : ScriptableObject
 
     public int numberOfPrefabsToCreate;
     public Vector3[] spawnPoints;
+
 }

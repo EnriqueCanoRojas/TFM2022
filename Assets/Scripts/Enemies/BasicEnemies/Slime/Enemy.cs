@@ -10,15 +10,19 @@ public class Enemy : MonoBehaviour
     private Collider[] withinAggroColliders;
     private NavMeshAgent navAgent;
     private Player player;
+    public bool hitted;
     public bool isGrounded;
     public GameObject SliderHP;
+    public int MommentHP;
     // Start is called before the first frame update
     void Start()
     {
         navAgent = GetComponent<NavMeshAgent>();
+        hitted = false;
     }
     void FixedUpdate()
     {
+        MommentHP = thisEnemy.currentHP;
         NavMeshHit hit;
         if (NavMesh.SamplePosition(this.transform.position, out hit, 1f, NavMesh.AllAreas))
         {
@@ -30,7 +34,7 @@ public class Enemy : MonoBehaviour
         {
             isGrounded = false;
         }
-        if (isGrounded)
+        if (isGrounded && !hitted)
         {
             withinAggroColliders = Physics.OverlapSphere(this.transform.position, 10, aggroLayerMask);
             if (withinAggroColliders.Length > 0)
@@ -45,7 +49,10 @@ public class Enemy : MonoBehaviour
                 PopDownSlide();
             }
         }
-
+        if (hitted == true)
+        {
+            StartCoroutine(RecoveryCD());
+        }
         switch (thisEnemy.TypeEnemy)
         {
             case (EnemyClass.Basic):
@@ -61,12 +68,19 @@ public class Enemy : MonoBehaviour
                 break;
         }
     }
+    public IEnumerator RecoveryCD()
+    {
+        yield return new WaitForSeconds(2);
+        hitted = false;
+    }
     public void PerformAttack()
     {
         player.Hitted(5);
     }
     public void TakeDamage(int amount)
     {
+        hitted = true;
+        Debug.Log("BeingHitted");
         thisEnemy.currentHP -= amount;
         if (thisEnemy.currentHP <= 0)
             Die();
@@ -86,6 +100,8 @@ public class Enemy : MonoBehaviour
         if (item != null && instanced==false)
         {
             Instantiate(item, transform.position, Quaternion.identity);
+            if (thisEnemy.isSpecialDrop)
+                Instantiate(thisEnemy.specialDrop, transform.position, Quaternion.identity);
             instanced = true;
         }
     }
@@ -103,7 +119,7 @@ public class Enemy : MonoBehaviour
             CancelInvoke("PerformAttack");
         }
     }
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("Weapon"))
         {

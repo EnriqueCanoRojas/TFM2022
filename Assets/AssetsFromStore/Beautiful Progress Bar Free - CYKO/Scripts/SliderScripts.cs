@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-
 public class SliderScripts : MonoBehaviour
 {
     public Slider slider;

@@ -4,29 +4,41 @@ using UnityEngine;
 
 public class IEnemySpawner : MonoBehaviour
 {
+    public bool done;
+    public RoomControl roomC;
     // The GameObject to instantiate.
     public GameObject entityToSpawn;
 
     // An instance of the ScriptableObject defined above.
     public SpawnManager spawnManagerValues;
 
+    public GameObject[] spawnsManual;
     // This will be appended to the name of the created entities and increment when each is created.
     int instanceNumber = 1;
 
     void Start()
     {
-        SpawnEntities();
+        roomC = this.gameObject.GetComponent<RoomControl>();
+        done = false;
     }
-
-    void SpawnEntities()
+    void Update()
+    {
+        if (roomC.StartRoom && !done)
+        {
+            SpawnEntities();
+            done = true;
+        }
+    }
+    public void SpawnEntities()
     {
         int currentSpawnPointIndex = 0;
 
         for (int i = 0; i < spawnManagerValues.numberOfPrefabsToCreate; i++)
         {
             // Creates an instance of the prefab at the current spawn point.
-            GameObject currentEntity = Instantiate(entityToSpawn, spawnManagerValues.spawnPoints[currentSpawnPointIndex], Quaternion.identity);
+            //GameObject currentEntity = Instantiate(entityToSpawn, spawnManagerValues.spawnPoints[currentSpawnPointIndex], Quaternion.identity);
 
+            GameObject currentEntity = Instantiate(entityToSpawn, spawnsManual[currentSpawnPointIndex].transform.position, Quaternion.identity);
             // Sets the name of the instantiated entity to be the string defined in the ScriptableObject and then appends it with a unique number.
             currentEntity.name = spawnManagerValues.prefabName + instanceNumber;
 

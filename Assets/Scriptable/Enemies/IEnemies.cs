@@ -21,19 +21,26 @@ public class IEnemies : ScriptableObject, ISerializationCallbackReceiver
     public EnemyClass TypeEnemy;
     public int MaxEnemyHP;
     public GameObject[] drops;
+    public bool isSpecialDrop;
+    public GameObject specialDrop;
 
-    [System.NonSerialized]
+    //[System.NonSerialized]
     public int currentHP;
 
+    void Awake()
+    {
+        currentHP = MaxEnemyHP;
+    }
     void start()
     {
         ID = 0;
     }
     public void OnBeforeSerialize()
     {
-        currentHP = MaxEnemyHP;
+       currentHP = MaxEnemyHP;
     }
     public void OnAfterDeserialize()
     {
+        //currentHP = MaxEnemyHP;
     }
 }

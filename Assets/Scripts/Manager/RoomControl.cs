@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class RoomControl: MonoBehaviour
 {
@@ -14,14 +15,18 @@ public class RoomControl: MonoBehaviour
     public bool inRoom;
     public bool finishRoom;
 
+    public GameObject[] Enemies;
 
     bool m_Started;
     public LayerMask m_LayerMask;
+
 
     // Start is called before the first frame update
     void Start()
     {
         StartRoom = false;
+        finishRoom = false;
+        Spawner = this.gameObject.GetComponent<IEnemySpawner>();
         //Añadir un Ignore Collision.
     }
 
@@ -35,7 +40,7 @@ public class RoomControl: MonoBehaviour
             switch (inRoom)
             {
                 case true:
-                    RoomInit();
+                    StartCoroutine(StartingRoom());
                     break;
                 case false:
                     //RoomFinish();
@@ -46,44 +51,26 @@ public class RoomControl: MonoBehaviour
             RoomFinish();
         else { }
     }
-    void FixedUpdate()
+    void EnemiesCount()
     {
-        //MyCollisions();
-    }
-    void MyCollisions()
-    {
-        //Use the OverlapBox to detect if there are any other colliders within this box area.
-        //Use the GameObject's centre, half the size (as a radius) and rotation. This creates an invisible box around your GameObject.
-        Collider[] hitColliders = Physics.OverlapBox(CenterOfRoom.transform.position, CenterOfRoom.transform.localScale*5.5f, Quaternion.identity, m_LayerMask);
-        int i = 0;
-        //Check when there is a new collider coming into contact with the box
-        while (i < hitColliders.Length)
+        if (Enemies.Length == 0)
         {
-            //Output all of the collider names
-            Debug.Log("Hit : " + hitColliders[i].name + i);
-            //Increase the number of Colliders in the array
-            if (hitColliders[i].gameObject.CompareTag("Player"))
-            {
-                StartRoom = true;
-                inRoom = true;
-                //SpawnEnemies.
-            }
-            else {
-                StartRoom = false;
-                inRoom = false;
-            }
-            i++;
+            Enemies = GameObject.FindGameObjectsWithTag("Enemy");
         }
-
-    }
-    //Draw the Box Overlap as a gizmo to show where it currently is testing. Click the Gizmos button to see this
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        //Check that it is being run in Play Mode, so it doesn't try to draw this in Editor mode
-        if (m_Started)
-            //Draw a cube where the OverlapBox is (positioned where your GameObject is as well as a size)
-            Gizmos.DrawWireCube(CenterOfRoom.transform.position, CenterOfRoom.transform.localScale);
+        if (Enemies.Length > 0)
+        {
+            var i = 0;
+            var alive = 0;
+            if (Enemies[i] == null)
+            {
+                alive -= 1;
+                i++;
+            }
+            if (alive == 0)
+            {
+                finishRoom = true;
+            }
+        }
     }
     void RoomFinish()
     {
@@ -99,15 +86,24 @@ public class RoomControl: MonoBehaviour
     }
     void RoomInit()
     {
-        StartRoom = true;
-        for (int i = 0; i < walls.Length-1; i++)
+        StartRoom = true;    
+        if (inRoom)
         {
-            if(!walls[i].activeSelf)
+            for (int i = 0; i < walls.Length - 1; i++)
             {
-                BlockDoors[i].SetActive(true);
+                if (!walls[i].activeSelf)
+                {
+                    BlockDoors[i].SetActive(true);
+                }
+                else { }
             }
-            else { }
         }
+    }
+    IEnumerator StartingRoom()
+    {
+        yield return new WaitForSeconds(1f);
+        RoomInit();
+        EnemiesCount();
     }
     void OnTriggerEnter(Collider other)
     {

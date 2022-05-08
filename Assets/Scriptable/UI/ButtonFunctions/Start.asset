@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e79ab576ed886924e85d5e8871598ab4, type: 3}
   m_Name: Start
   m_EditorClassIdentifier: 
-  Name: Demo
+  Name: ProceduralMode
   button: 0

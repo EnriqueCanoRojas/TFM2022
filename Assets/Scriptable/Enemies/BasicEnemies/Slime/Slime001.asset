@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39cc3f86b330cf74abb38e7ff68ecb3d, type: 3}
+  m_Name: Slime001
+  m_EditorClassIdentifier: 
+  Description: 
+  Experience: 10
+  Power: 20
+  TypeEnemy: 0
+  MaxEnemyHP: 100
+  drops:
+  - {fileID: 3121768187510580662, guid: c286bbef38227b7448250ebd0a0e50b3, type: 3}
+  - {fileID: 9157551118562607482, guid: 2b235b5332c58f645a6defaa63dc6b52, type: 3}
+  currentHP: 100

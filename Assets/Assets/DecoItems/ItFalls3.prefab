@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4932201665390239459}
   - component: {fileID: -5534764362423847032}
   - component: {fileID: -3645871290707176364}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: ItFalls3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,8 +92,8 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5596326220347959451}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -125,6 +125,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa60a7b7417161458fa27c4915c50ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AreaSpawn: {x: 0, y: 0, z: 0}
-  areaX: 0
-  areaZ: 0
