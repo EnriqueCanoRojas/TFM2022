@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.AI;
+using UnityEngine.AI;
 
 public class DungeonGenerator : MonoBehaviour
 {
@@ -213,7 +213,7 @@ public class DungeonGenerator : MonoBehaviour
 
     public static void BakingNav()
     {
-        NavMeshBuilder.ClearAllNavMeshes();
-        NavMeshBuilder.BuildNavMesh();
+       // NavMeshBuilder.ClearAllNavMeshes();
+       // NavMeshBuilder.BuildNavMesh();
     }
 }

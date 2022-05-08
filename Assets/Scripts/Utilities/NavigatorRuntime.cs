@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.AI;
+using UnityEngine.AI;
 
 public class NavigatorRuntime : MonoBehaviour
 {
@@ -10,7 +10,7 @@ public class NavigatorRuntime : MonoBehaviour
     // Use this for initialization
     void Update()
     {
-        NavMeshBuilder.ClearAllNavMeshes();
-        NavMeshBuilder.BuildNavMesh();
+       // NavMeshBuilder.ClearAllNavMeshes();
+       // NavMeshBuilder.BuildNavMesh();
     }
 }

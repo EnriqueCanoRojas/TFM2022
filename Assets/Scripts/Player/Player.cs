@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.Animations;
+using UnityEngine.Animations;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
