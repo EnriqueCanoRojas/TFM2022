@@ -1434,10 +1434,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b13661c72e27c4796e9c92c13481ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: ad3817eabebd9f3499a9a1b3fb0c2055, type: 2}
+  playerStats: {fileID: 11400000, guid: 1deb5e583a66ca249b96ad5a784e45f5, type: 2}
   GameOver: {fileID: 11400000, guid: 9ab1c8120f0e7a84e8dea395531f9939, type: 2}
   Pause: {fileID: 11400000, guid: ec880c85804fd174685a3bc685263392, type: 2}
   StartGame: {fileID: 11400000, guid: 37d1af82f57cbf140a39cb087a137b01, type: 2}
+  GameMode: {fileID: 11400000, guid: b622d2473ac15214eb18bb2fb504abc4, type: 2}
+  EndGame: {fileID: 11400000, guid: 141fd51630248574e894f2832eb382f6, type: 2}
   DungueonGenerator: {fileID: 6600293288366991217}
   Seed: {fileID: 11400000, guid: 197d3f44c8142fe4b8e285f8fe7456d9, type: 2}
   PausePanel: {fileID: 5469112338728715864}

@@ -7,7 +7,7 @@ public class ToggleVariable : ScriptableObject, ISerializationCallbackReceiver
 {
     public bool InitialToogle;
 
-    [System.NonSerialized]
+    //[System.NonSerialized]
     public bool RuntimeToogle;
 
     public void OnAfterDeserialize()

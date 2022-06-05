@@ -17,5 +17,12 @@ MonoBehaviour:
   Power: 10
   TypeEnemy: 0
   MaxEnemyHP: 120
-  drops: []
+  drops:
+  - {fileID: 9157551118562607482, guid: 2b235b5332c58f645a6defaa63dc6b52, type: 3}
+  - {fileID: 3121768187510580662, guid: c286bbef38227b7448250ebd0a0e50b3, type: 3}
+  - {fileID: 6115712539540819323, guid: 43ecdeafddc95654ba3ff93fbcd0dcb7, type: 3}
+  - {fileID: 2605606637128592106, guid: 43e6bca9b07f2d64e8dff1a078591928, type: 3}
+  - {fileID: 6649896497986940765, guid: 58d9319e74e839d469ee22a81d0692b5, type: 3}
+  isSpecialDrop: 0
+  specialDrop: {fileID: 0}
   currentHP: 120

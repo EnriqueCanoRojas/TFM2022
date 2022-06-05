@@ -652,7 +652,9 @@ MonoBehaviour:
   - {fileID: 2934513696457946302}
   CenterOfRoom: {fileID: 4522343513877691331}
   inRoom: 0
-  finishRoom: 0
+  m_finishRoom: 0
+  PreparationDone: 0
+  PreparationDone1: 0
   Enemies: []
   m_LayerMask:
     serializedVersion: 2
@@ -686,6 +688,9 @@ MonoBehaviour:
   roomC: {fileID: 0}
   entityToSpawn: {fileID: 7479537535915140595, guid: c56102b154d0eb24f8e78d2cd95d4ef8, type: 3}
   spawnManagerValues: {fileID: 11400000, guid: 44e9565c39fb5374ca5e57536f8c24c6, type: 2}
+  drops:
+  - {fileID: 6115712539540819323, guid: 43ecdeafddc95654ba3ff93fbcd0dcb7, type: 3}
+  - {fileID: 2605606637128592106, guid: 43e6bca9b07f2d64e8dff1a078591928, type: 3}
   spawnsManual:
   - {fileID: 7205414283867120659}
 --- !u!114 &-4259173884872283066

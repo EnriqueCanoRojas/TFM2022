@@ -13,7 +13,9 @@ public class RoomControl: MonoBehaviour
     public GameObject[] walls;
     public GameObject CenterOfRoom;
     public bool inRoom;
-    public bool finishRoom;
+    public bool m_finishRoom;
+    public bool PreparationDone;
+    public bool PreparationDone1;
 
     public GameObject[] Enemies;
 
@@ -25,7 +27,7 @@ public class RoomControl: MonoBehaviour
     void Start()
     {
         StartRoom = false;
-        finishRoom = false;
+        m_finishRoom = false;
         Spawner = this.gameObject.GetComponent<IEnemySpawner>();
         //Añadir un Ignore Collision.
     }
@@ -33,13 +35,13 @@ public class RoomControl: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Spawner && !finishRoom)
+        if(Spawner && !m_finishRoom)
         {
             // Si la habitacion se inicia se bloquean las salidas entonces se puede iniciar la pelea.
             // Si la habitacion termina se desbloquean las salidas.
             switch (inRoom)
             {
-                case true:
+                case true:  
                     StartCoroutine(StartingRoom());
                     break;
                 case false:
@@ -47,15 +49,22 @@ public class RoomControl: MonoBehaviour
                     break;
             }
         }
-        if (finishRoom && StartRoom)
+        if (m_finishRoom && StartRoom)
+        {
             RoomFinish();
+        }
         else { }
+    }
+    void FixedUpdate()
+    {
+        //EnemiesCount();
     }
     void EnemiesCount()
     {
-        if (Enemies.Length == 0)
+        if (Enemies.Length == 0 && !PreparationDone1)
         {
             Enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            PreparationDone1 = true;
         }
         if (Enemies.Length > 0)
         {
@@ -68,7 +77,9 @@ public class RoomControl: MonoBehaviour
             }
             if (alive == 0)
             {
-                finishRoom = true;
+                m_finishRoom = true;
+                PreparationDone = false;
+                PreparationDone1 = false;
             }
         }
     }
@@ -102,7 +113,11 @@ public class RoomControl: MonoBehaviour
     IEnumerator StartingRoom()
     {
         yield return new WaitForSeconds(1f);
-        RoomInit();
+        if (!PreparationDone)
+        {
+            RoomInit();
+            PreparationDone = true;
+        }
         EnemiesCount();
     }
     void OnTriggerEnter(Collider other)

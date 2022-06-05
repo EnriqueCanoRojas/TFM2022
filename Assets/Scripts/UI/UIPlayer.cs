@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UIPlayer : MonoBehaviour
 {
     public PlayerStats playerStats;
+    public Player player;
+
 
     public Slider sliderHP;
     public Image fillHP;

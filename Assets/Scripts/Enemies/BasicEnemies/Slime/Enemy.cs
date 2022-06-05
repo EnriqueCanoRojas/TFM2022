@@ -5,6 +5,11 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    private SpriteRenderer m_SpriteRenderer;
+    private Color m_NewColor;
+    float m_Red, m_Blue, m_Green;
+
+
     public IEnemies thisEnemy;
     public LayerMask aggroLayerMask;
     private Collider[] withinAggroColliders;
@@ -12,13 +17,20 @@ public class Enemy : MonoBehaviour
     private Player player;
     public bool hitted;
     public bool isGrounded;
+    public bool colorchosed;
     public GameObject SliderHP;
     public int MommentHP;
+
+    public ToggleVariable EndGame;
+
     // Start is called before the first frame update
     void Start()
     {
+        colorchosed = false;
         navAgent = GetComponent<NavMeshAgent>();
         hitted = false;
+        SelectColor();
+        //m_SpriteRenderer.color = Color.blue;
     }
     void FixedUpdate()
     {
@@ -62,6 +74,7 @@ public class Enemy : MonoBehaviour
                 break;
 
             case (EnemyClass.Boss):
+                m_SpriteRenderer.color = Color.red;
                 break;
 
             case (EnemyClass.Special):
@@ -73,9 +86,21 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(2);
         hitted = false;
     }
+    public void SelectColor()
+    {
+        m_SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        if (thisEnemy.TypeEnemy == EnemyClass.Basic && colorchosed == false)
+        {
+            var Arraylist = new Color[] { Color.blue, Color.green, Color.black , Color.cyan , Color.magenta, Color.grey, Color.white, Color.yellow };
+            var l = 0;
+            l = Random.Range(0, Arraylist.Length);
+            m_SpriteRenderer.color = Arraylist[l];
+            colorchosed = true;
+        }
+    }
     public void PerformAttack()
     {
-        player.Hitted(5);
+        player.Hitted(thisEnemy.Power);
     }
     public void TakeDamage(int amount)
     {
@@ -83,19 +108,29 @@ public class Enemy : MonoBehaviour
         Debug.Log("BeingHitted");
         thisEnemy.currentHP -= amount;
         if (thisEnemy.currentHP <= 0)
-            Die();
+        {
+            if (EndGame!=null)
+            { 
+                EndGame.RuntimeToogle = true;
+            }
+         Die();
+            
+        }
     }
     public void Die()
     {
         if(thisEnemy.drops.Length>0)
+        {
             DropLoot();
+            
+        }
         else { }
         Destroy(gameObject);
     }
     void DropLoot()
     {
         bool instanced = false;
-        var i = Random.Range(0, thisEnemy.drops.Length-1);
+        var i = Random.Range(0, thisEnemy.drops.Length);
         GameObject item = thisEnemy.drops[i];
         if (item != null && instanced==false)
         {

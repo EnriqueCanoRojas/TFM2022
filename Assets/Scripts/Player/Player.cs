@@ -30,6 +30,9 @@ public class Player : MonoBehaviour
     public Quaternion currentRotation;
 
 
+    //Current Stat for Testing
+    public int CurrentHP;
+
     //Direct Animations 
     public Animator _playerAnim;
 
@@ -51,6 +54,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         currentRotation = this.gameObject.transform.rotation;
+        CurrentHP = (int)playerStats.rHP;
         GatherInput();
         // GatherSecondaryInput();
         Look();
@@ -111,7 +115,7 @@ public class Player : MonoBehaviour
             _input = new Vector3(stickValue.x, ButtonValueA, stickValue.y);
 
             //Animation Controls
-            if (ButtonValueA != 0 && isGrounded.RuntimeToogle)
+            if (ButtonValueA != 0 && !isGrounded.RuntimeToogle)
             { 
                 _playerAnim.SetTrigger("Jump");
             }
@@ -121,17 +125,24 @@ public class Player : MonoBehaviour
             //Movements
             _input = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxis("Jump"), Input.GetAxisRaw("Vertical"));
             dash = Keyboard.current.FindKeyOnCurrentKeyboardLayout("f").ReadValue();
-            attack = Keyboard.current.FindKeyOnCurrentKeyboardLayout("e").ReadValue();
+            if(Mouse.current.leftButton.ReadValue()==0)
+                attack = Keyboard.current.FindKeyOnCurrentKeyboardLayout("e").ReadValue();
+            if (Keyboard.current.FindKeyOnCurrentKeyboardLayout("e").ReadValue() == 0)
+                attack = Mouse.current.leftButton.ReadValue();
 
 
             //Animation Controls
-            if (Input.GetAxis("Jump") != 0 && isGrounded.RuntimeToogle)
+            if (Input.GetAxis("Jump") != 0 && !isGrounded.RuntimeToogle)
                 _playerAnim.SetTrigger("Jump");
         }
     }
-    public void Hitted(float dmg)
+    public void Hitted(int dmg)
     {
+        if (dmg > playerStats.rHP)
+            playerStats.rHP = 0;
         playerStats.rHP -= dmg;
+        if (playerStats.rHP == 0)
+            GameOver.RuntimeToogle = true;
     }
     public void PlayerMoveSet()
     {
@@ -170,13 +181,32 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(CD);
         Return = true;
     }
-    public IEnumerator BeHittedCD(float CD, bool done, float dmg)
+    public IEnumerator BeHittedCD(float CD, bool done, int dmg)
     {
-        if (!done)
+        if (done)
         {
             yield return new WaitForSecondsRealtime(CD);
             Hitted(dmg);
-            done = true;
+            done = false;
+        }
+    }
+    public void RestoreHP()
+    {
+        playerStats.rHP = playerStats.HP;
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            if (!BeHit.RuntimeToogle)
+            {
+             BeHittedCD(0.5f, BeHit.RuntimeToogle, collision.gameObject.GetComponent<Enemy>().thisEnemy.Power);            
+            }
+        }
+        if(collision.gameObject.CompareTag("HealthPotion"))
+        {
+            RestoreHP();
+            Destroy(collision.gameObject);
         }
     }
     void OnCollisionStay(Collision collision)

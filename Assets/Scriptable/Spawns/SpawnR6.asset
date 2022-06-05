@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d10f53f9c0206ad4fa37ea4fdc3cf311, type: 3}
   m_Name: SpawnR6
   m_EditorClassIdentifier: 
-  prefabName: 
-  numberOfPrefabsToCreate: 0
-  spawnPoints: []
+  prefabName: Slime
+  numberOfPrefabsToCreate: 4
+  spawnPoints:
+  - {x: -8.1105, y: 0, z: 6}
+  - {x: -8.1105, y: 0, z: 2}
+  - {x: 0, y: 0, z: 0}
+  - {x: -4, y: 1.6616666, z: 2}

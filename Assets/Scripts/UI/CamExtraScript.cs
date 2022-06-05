@@ -36,7 +36,7 @@ public class CamExtraScript : MonoBehaviour
     }
     void ControlCamera()
     {
-        for (int i = 0; i < rooms.Length-1; i++)
+        for (int i = 0; i < rooms.Length; i++)
         {
             if (rooms[i].GetComponent<RoomControl>().inRoom)
             {

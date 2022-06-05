@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public ToggleVariable Pause;
     public ToggleVariable StartGame;
 
+    public IntVariable GameMode;
+    public ToggleVariable EndGame;
     //
     public GameObject DungueonGenerator;
     //
@@ -45,13 +47,18 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(SceneManager.GetActiveScene().name == "MainMenu")
+        if (EndGame.RuntimeToogle == true)
+        {
+            SceneManager.LoadScene("MainMenu");
+            EndGameControl();
+        }
+        if (SceneManager.GetActiveScene().name == "MainMenu")
         {
             GameOver.RuntimeToogle = false;
             Pause.RuntimeToogle = false;
         }
         //Scenes excluded the MainMenu
-        if(SceneManager.GetActiveScene().name != "MainMenu")
+        if (SceneManager.GetActiveScene().name != "MainMenu")
         {
             GameStartControl();
         }
@@ -75,6 +82,11 @@ public class GameManager : MonoBehaviour
         {
             GameOverProtocol();
         }
+    }
+    public void EndGameControl()
+    {
+        DungueonGenerator.SetActive(false);
+        StartGame.RuntimeToogle = false;
     }
     public void PauseProtocol()
     {

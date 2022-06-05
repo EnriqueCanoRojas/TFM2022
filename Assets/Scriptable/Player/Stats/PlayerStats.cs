@@ -61,6 +61,8 @@ public class PlayerStats : ScriptableObject, ISerializationCallbackReceiver
     [System.NonSerialized]
     public float rCoins;
 
+
+ 
     public void OnAfterDeserialize()
     {
         rHP = HP;

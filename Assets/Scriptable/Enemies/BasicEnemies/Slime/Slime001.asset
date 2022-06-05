@@ -18,6 +18,8 @@ MonoBehaviour:
   TypeEnemy: 0
   MaxEnemyHP: 100
   drops:
-  - {fileID: 3121768187510580662, guid: c286bbef38227b7448250ebd0a0e50b3, type: 3}
   - {fileID: 9157551118562607482, guid: 2b235b5332c58f645a6defaa63dc6b52, type: 3}
+  - {fileID: 2605606637128592106, guid: 43e6bca9b07f2d64e8dff1a078591928, type: 3}
+  isSpecialDrop: 0
+  specialDrop: {fileID: 0}
   currentHP: 100

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d10f53f9c0206ad4fa37ea4fdc3cf311, type: 3}
   m_Name: SpawnR4
   m_EditorClassIdentifier: 
-  prefabName: 
-  numberOfPrefabsToCreate: 0
-  spawnPoints: []
+  prefabName: Boss
+  numberOfPrefabsToCreate: 1
+  spawnPoints:
+  - {x: -5, y: 0, z: 0}
